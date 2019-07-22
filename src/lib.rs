@@ -13,6 +13,7 @@ extern crate serde;
 extern crate serde_json;
 #[macro_use]
 extern crate serde_derive;
+extern crate slip21;
 #[macro_use]
 extern crate lazy_static;
 #[macro_use]
@@ -31,6 +32,7 @@ pub mod errors;
 pub mod network;
 pub mod session;
 pub mod settings;
+pub mod slip77;
 pub mod util;
 pub mod wallet;
 
