@@ -10,6 +10,17 @@ env:
   matrix:
     - UNUSED=true
 
+matrix:
+  include:
+    # fmt checks and release build
+    - script:
+        - docker run -v $PWD:/gdk_rpc $DOCKERBUILDER@sha256:$DOCKERHASH /bin/bash -c "cd /gdk_rpc && source /root/.cargo/env && cargo fmt --all -- --check && cargo check --all && cargo clippy --all && cargo build --all --release"
 
-script:
-  - docker run -v $PWD:/gdk_rpc $DOCKERBUILDER@sha256:$DOCKERHASH /bin/bash -c "cd /gdk_rpc && source /root/.cargo/env && cargo fmt --all -- --check && cargo check --all && cargo clippy --all && cargo build --all --release && ./test.sh && ./ndk.sh"
+    # unit tests
+    - script:
+        - docker run -v $PWD:/gdk_rpc $DOCKERBUILDER@sha256:$DOCKERHASH /bin/bash -c "cd /gdk_rpc && source /root/.cargo/env && ./test.sh"
+
+    # NDK check
+    - script:
+        - docker run -v $PWD:/gdk_rpc $DOCKERBUILDER@sha256:$DOCKERHASH /bin/bash -c "cd /gdk_rpc && source /root/.cargo/env && ./ndk.sh"
+
